@@ -2777,6 +2777,8 @@ if re.search(r"^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.edu$", email):
 else:
     print("Invalid")
 
+
+
 # We could just skip the whole "[a-zA-Z0-9]" thing with a new type of keyword called "\w".
 # It kinda represents a word character which is commonly known as "Alpha numeric symbol/underscore."
 # So we can just use it like this_
@@ -2822,6 +2824,17 @@ else:
 
 
 """
+# What if we want "space" to be accepted in the email.
+import re
+
+email =  input("What's your email? ").strip()
+
+if re.search(r"^[a-zA-Z0-9 ]+@[a-zA-Z0-9 ]+\.edu$", email):           # We just have to add "space" into it.
+    print("Valid")
+
+else:
+    print("Invalid")
+
 # If our given input has some uppercase letters then the program will still take it as valid.
 # But if every word of our input is capitalized then the program will be showing us that the program is invalid.
 # So we can just take the whole input as lowercase by ourselves. Using the "lower()".
@@ -2878,3 +2891,148 @@ else:
 
 # This is where the 're.MULTILINE' comes. Or 're.all' whereby we can configure the dot to recognize not just any character except new lines but any character + newline.
 
+import re
+
+email =  input("What's your email? ").strip()
+
+if re.search(r"^\w+@(\w+\.)?\w+\.(edu|com|org|net|co)$", email, re.IGNORECASE):     # We did it like that so that we can say that it's valid  
+    print("Valid")
+
+else:
+    print("Invalid")
+
+
+
+
+
+
+
+# But sometimes we can see other kinds of email addresses. Like_ "Hsntmjd@harvard.edu.org"
+# We can see that there is miltiple "." and other texts.
+# We have to give that kind of codes regarding to the demand by using "\w"
+import re
+
+email =  input("What's your email? ").strip()
+
+if re.search(r"^\w+@\w+\.\w+\.(edu|com|org|net|co)$", email.lower()):     # We did it like that so that we can say that it's valid  
+    print("Valid")
+
+else:
+    print("Invalid")
+
+# But now if we give the input with the usual email id's, then the program will say that the given email is invalid.
+# So we have to make a program which accepts both of them.
+
+
+# To solve the problem let's go to out very first list regarding email syntaxes.
+
+"""
+    .       any character except a newline
+    *       0 or more repetition
+    +       1 or more repetiion
+    ?       0 or 1 repetition
+    {m}     m repetitions
+    {m,n}   m-n repetitions
+"""
+
+# We are now gonna use the "?  0 or 1 repetition" part.
+# The "?" means zero or one repetitions which effectively means optional.
+# It's either there(1) or it's not (0).
+
+
+# We are just going to use parenthesis to solve the question.
+# We first just grouped the "\w+\." and this now still work and it won't effect the program.
+# Because we've only added parenthesis around the new part for the subdomain. But then still the output would be invalid.
+
+# But in the parenthesis we can say that it's one big logical unit, a big group of ideas together.
+# Now we add a single question mark there. like this_"(\w+\.)?"
+
+# This will now tell our "re.search" that the whole thing in parenthesis can either be there once or be there not at all.
+
+
+
+
+import re
+
+email =  input("What's your email? ").strip()
+
+if re.search(r"^\w+@(\w+\.)?\w+\.(edu|com|org|net|co)$", email.lower()):     # We did it like that so that we can say that it's valid  
+    print("Valid")
+
+else:
+    print("Invalid")
+ 
+ # And that solves the problem.
+
+# But we might feel that it's hard to understand the whole "re.search" function. Because it's too cryptic right now.
+
+# Let's break it down now.
+
+
+"""
+    Let's break down the code:
+
+    if: This is a conditional statement in Python. It allows you to execute a block of code only if a certain condition is true.
+
+    re.search(pattern, string): This is a function call to the search function from the re module. It searches for a specified pattern (regular expression) within a string. In this case, it's used to search for a specific pattern in the email string.
+
+    r"^\w+@(\w+\.)?\w+\.(edu|com|org|net|co)$": This is a regular expression pattern. Let's break it down:
+
+    r": Indicates that this is a raw string, which allows for easier handling of backslashes in regular expressions.
+    ^: Asserts the start of a line.
+    \w+: Matches one or more word characters (letters, digits, or underscores). This represents the username part of an email address.
+    @: Matches the literal "@" symbol.
+    (\w+\.)?: This is a non-capturing group ( )?. It matches zero or one occurrence of the group. In this case, it matches an optional group that contains one or more word characters followed by a dot. This is for handling subdomains in the domain name (e.g., subdomain.example.com).
+    \w+: Matches one or more word characters. This represents the main domain name part before the dot (e.g., "example" in "example.com").
+    \.: Matches a literal dot (".") character.
+    (edu|com|org|net|co): This is an alternation ( ) group that matches one of the specified options inside the parentheses. In this case, it matches "edu", "com", "org", "net", or "co".
+    $: Asserts the end of a line.
+    So, this regular expression pattern is designed to match email addresses that have a specific format: <username>@<subdomain>.<domain>.<extension>, where the domain extension can be "edu", "com", "org", "net", or "co".
+
+    email.lower(): This converts the entire email address to lowercase. This ensures that the regular expression pattern matches regardless of the case of the email address. For example, "example@domain.com" and "Example@Domain.com" would both be considered valid.
+
+    If the regular expression pattern matches the provided email address, the if condition is considered true, and the code block within the if statement will be executed (i.e., print("Valid")). Otherwise, if the pattern does not match, the else block will be executed (i.e., print("Invalid")).
+"""
+
+# What if we want a "." to be allowed before the "@".
+# We just have to use list as before.
+# Also we don't have speficially show the "Uppercase" since we are now ignoring the case of the letters.
+
+
+import re
+
+email =  input("What's your email? ").strip()
+
+if re.search(r"^[a-z0-9\. ]+@[a-z0-9 ]+\.edu$", email, re.IGNORECASE):          
+    print("Valid")
+
+else:
+    print("Invalid")
+
+# And luckily if we use the code like this the whole problem of accepting the unique kinds of emails which contains multiple ".".
+
+# HOW????
+
+# Since we are making lists of the choices/demands, why don't we just do the same thing as we did for the part that stands before the "@"
+
+# We have allowed the "." in the begining og the email. Why don't we just do the same thing after the '@' part too.
+# That just solves the whole problem.
+
+import re
+
+email =  input("What's your email? ").strip()
+
+if re.search(r"^[a-z0-9\. ]+@[a-z0-9\. ]+\.edu$", email, re.IGNORECASE):          
+    print("Valid")
+
+else:
+    print("Invalid")
+
+"""
+    "if re.search(r"^[a-z0-9\. ]+@[a-z0-9\. ]+\.edu$", email, re.IGNORECASE):  "
+    the given code means_
+        [a-z0-9\. ]   we are accepting "." at the beginnig of the email.
+        [a-z0-9\. ]   we are also accepting "." after "@". It doesn't matter how many "." there is..
+            The main demand now is that it has to end with ".edu"
+            
+"""
