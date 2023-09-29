@@ -1,3 +1,5 @@
+# Welcome to python.
+# Our purpose here is to learn python from ground zero.
 """
     Used variable-
     x-user's name
