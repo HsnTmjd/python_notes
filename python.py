@@ -3036,3 +3036,73 @@ else:
             The main demand now is that it has to end with ".edu"
             
 """
+
+"""
+    ^[a-zA-Z0-9. !#$%&' *+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$
+
+    This the actual formula which is now used in websites to see if the given email id is valid.
+    
+"""
+import re
+
+email =  input("What's your email? ").strip()
+
+if re.search(r"^[a-zA-Z0-9. !#$%&' *+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$", email, re.IGNORECASE):          
+    print("Valid")
+
+else:
+    print("Invalid")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+name = input("What's your name? ").strip()
+
+if "," in name:
+    last, first = name.split(", ")
+    name = f"{first} {last}"        # We are now remaking the name in a new format.
+print(f"Hello, {name}")    # By that it means if the given input has comma in it then the "if" program is gonna work and it's going to override the input.
+
+# If it doesn't has comma then it's just going to print what was just given to the progam.
+"""
+    The "f" function actually works to format something. 
+    As we just devided the previous name into two pieces, we now have two variables.
+    And then we are recreating the name variable.
+        By the "name = f'{first} {last}'",
+             It means that the new name string now contains the input on this format right now "Hossain Tamjid"
+                But before it was like that "Hossain, Tamjid" and it didn't look good
+    By doing that we are actually overriding user's input.
+
+"""
+# This code right now fixes most of our problem. But what could go wrong even with this input.
+
+"""
+    1. What if we use something like that in the input_
+        Hossain, Tamjid
+    Then the program is going to print "Hello, Tamjid Hossain".
+        As we can see it actually rearranged my name. But it is not a big issue here.
+
+    2. But what if my name is "Hossain Tamjid, jr"
+        Then the output will be like this "Hello, jr Hossain Tamjid". Now it's a problem. It just messed up my name.
+    
+    3. What if we just give the input like that now_ 
+        Hossain,Tamjid     (It has no spaces after the comma)
+    Then we are gonna see the valueerror.
+        What exactly is happening here?
+            Well we've used "split(", ")"
+             Here the spilt is is actually spiltting the input in respect of comma and space.
+              So if the program can't find both comma and space it just cant devide the program.
+              
+
+
+"""
