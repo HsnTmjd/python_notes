@@ -3054,17 +3054,18 @@ else:
     print("Invalid")
 
 
+# Let's try this function with some of our old code
 
+name = input("What's your name? ").strip()
+print(f"Hello, {name}")
 
-
-
-
-
-
-
-
-
-
+# But here comes a catch.
+"""
+    What if we give our input as something like that "Hossain, Tamjid".
+        But then the output will be like_ "Hello, Hossain, Tamjid"
+    But we don't the program to do something like that.
+"""
+  
 
 name = input("What's your name? ").strip()
 
