@@ -6,13 +6,13 @@
     y-Name of the user's mother
     area-Where does she lives?
 """
-#ask user for their name
+# Ask user for their name
 x = input("What's your name buddy? " )
-#we are adding the input into the variable
-#saying hello
+# We are adding the input into the variable
+# Saying hello
 print("hello,")
 print(x)
-# but this way their is gap on the introduction
+# But this way their is gap on the introduction
 """
     another way of adding a comments
     the output will be like_
@@ -28,7 +28,7 @@ the output will be like_
 print("Nice to meet you" + x)
 """
     But this time the output is like_
-    "Nice to meet youtamjid"
+    "Nice to meet you tamjid"
     we can add a space ourselves like "print("nice to meet you " + x)"
     We cam see that there is no space between the printed text and the variable.
     So what we have to do is use another operator. We are going to use"," instead of the "+"
@@ -46,7 +46,6 @@ print("Nice to meet you" , x)
         print(x)
 
 """
-
 print("Nice to meet you " , end="")
 print(x)
 """
@@ -120,6 +119,17 @@ print(f"Hello, {x}")
     We are going to use _
     x = x.strip().title()
  """
+
+print('''I am tamjid
+       I study in cuet ''')
+
+# By ('''ABD ''') It'll print the same way
+
+# We can use it as a substitute of the format functions
+
+x = input("What's your name? ").strip("-")
+print(f"Hello, {x}")
+
 
 x = x.strip().title()
 print(f"Hello, {x}")
@@ -3107,3 +3117,177 @@ print(f"Hello, {name}")    # By that it means if the given input has comma in it
 
 
 """
+
+
+import re 
+
+name = input("What's your name? ").strip()
+matches = re.search(r"^(.+), (.+)$", name)
+if matches:
+    last, first = matches.groups()
+    name = f"{first} {last}"
+print(f"Hello, {name}")
+
+"""
+ Let's go through the code step by step:
+
+    import re: This line imports the regular expressions (regex) module, re, which provides functions for working with regular expressions.
+
+    name = input("What's your name? ").strip(): This line prompts the user to enter their name and then assigns the input to the variable name. The .strip() method is used to remove any leading or trailing spaces from the input. This ensures that there are no unwanted spaces affecting the name.
+
+    matches = re.search(r"^(.+), (.+)$", name): This line uses a regular expression pattern to search for a specific pattern in the name string. Let's break down the pattern:
+
+    ^: Asserts the start of a line.
+    (.+): This is a capturing group ( ) that matches one or more occurrences + of any character . (except for a newline). This represents the last name.
+    In the regular expression ^(.+), (.+)$, the (.+) parts are called "capturing groups". They are used to capture (or extract) specific portions of the matched text.
+
+    , : Matches a comma and a space.
+    (.+): Another capturing group that matches one or more occurrences of any character. This represents the first name.
+    $: Asserts the end of a line.
+    The regular expression pattern is designed to match names in the format "Last, First".
+
+    If a match is found, re.search() returns a match object. If no match is found, it returns None. The match object is then assigned to the variable matches.
+
+    if matches:: This checks whether a match was found. If a match was found (meaning matches is not None), the condition is considered true.
+
+    last, first = matches.groups(): If there was a match, this line extracts the captured groups (last name and first name) from the match object.
+
+    name = f"{first} {last}": This line reassigns the name variable with the first name and last name reversed and separated by a space.
+
+    print(f"Hello, {name}"): Finally, this line prints a greeting message using the modified name.
+
+    In summary, the code prompts the user for their name, expects it to be in the format "Last, First", rearranges it to "First Last", and then greets the user using the modified name. If the user enters a name in a different format, the code won't perform the rearrangement.
+
+"""
+
+import re
+
+name = input("What's your name? ").strip()
+match = re.search(r"^(.+), (.+)$", name)
+if matches:
+    last = matches.group(1)
+    first = matches.group(2)
+    name = f"{first} {last}"
+
+print(f"Hello, {name}")
+
+
+"""
+    last, first = matches.groups()
+      If we do this it'll automatically allocate the "first" into to the matching group 2, because we listed it out after the 'last'.
+    But in the second code, made it clear that we can control that too.
+    
+"""
+
+# We could also use it another way.
+
+import re
+
+name = input("What's your name? ").strip().title()
+matches = re.search(r"^(.+), (.+)$", name)
+if matches:
+    name = matches.group(2) + " " + matches.group(1)
+
+print(f"Hello, {name}")
+
+
+"""
+    By "if matches:
+        name = matches.group(2) + " " + matches.group(1)"
+
+    It means if the given conditions match, we are now overriding the 'name' string. And the captured groups will be divided.
+    The first one is group one and the second one is second. 
+        Now the new variable is_
+            group 1 and 'space' then group 2.
+        So It just erases the comma and solves the problem.
+"""
+
+# What if we are some kinda weird user and now we are giving the input like this_ 'hossain,      tamjid'
+
+# Well now we are facing a new problem.
+# We are now getting the output like this_ 'Hello,            Tamjid Hossain'
+
+# What if we are giving the input like this_ 'hossain,tamjid' (with no space.)
+# Now we see a new problem.
+# We are now getting the input like this_'Hello, hossain,tamjid.'
+    # Why is that? Because we ask for a space along with the comma at the re.search part. Here we are still looking for comma and sapce.
+
+
+# We are going to solve it by doing this_
+
+# By doing this we can solve the 'no space' problem. 
+
+import re
+
+name = input("What's your name? ").strip().title()
+matches = re.search(r"^(.+), ?(.+)$", name)         # Here we just added a question mark which means 0 or 1.
+if matches:
+    name = matches.group(2) + " " + matches.group(1)
+
+print(f"Hello, {name}")
+
+# Now if we give the input like this_ 'hossain,tamjid', we still get the prefect result.
+
+
+# What about the 'too much space' problem?
+ 
+import re
+
+name = input("What's your name? ").strip().title()
+matches = re.search(r"^(.+), *(.+)$", name)         # Here we just added a star mark which means 0 or more.
+if matches:
+    name = matches.group(2) + " " + matches.group(1)
+
+print(f"Hello, {name}")
+
+# The given code recently solves the both problems at the same time actually.
+
+
+# What if we want to do the 'matches' part on just one line and move on or something like that
+
+
+# Use of walrus operator.
+import re
+
+name = input("What's your name? ").strip().title()
+
+if matches := re.search(r"^(.+), (.+)$", name):
+    name = matches.group(2) + " " + matches.group(1)
+
+print(f"hello, {name}")
+
+
+"""
+    matches :=: This is a combination of the assignment operator :=. 
+    It's known as the "walrus operator," introduced in Python 3.8. 
+    It assigns the result of the expression on the right to the variable on the left.
+"""
+
+# Here we actually did 2 things at once. If it was java/c/ c++ then we had to do a lot of work with the perenthesis.
+# But we don't have to do any of that with python.
+
+
+# Here we not only assigned the return value of 're.search' to a variable called 'matches'..
+# We want to subsequently ask a boolean question "Is this effectively true or not? "
+# That's what we were doing at the previous code.
+
+"""
+    Then we were getting back the return value and assigning it to matches and then we were asking the question.
+
+"""
+
+# What we did at the recent code? We just combined both of them together at the single line.
+
+# But to do that we need a new operator.
+
+# Introducing the ":=". It is known as the walrus operator
+
+"""
+    It is used if we want to assign something from right to left,
+        And if we want to ask an if or an elif question on the same line.
+"""
+
+# It allows us to assign a value as we are doing from right to left and ask a boolean question about it
+
+# Fun fact why is it called walrus?
+    # If we look at ":=" as like landscape it kinda looks like an walrus.
