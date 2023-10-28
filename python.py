@@ -224,7 +224,7 @@ print(f"{v:,}")
 
 #Let's make a division.
 print(c/d)
-#But we want to round the answer so we are going to make our to round the number. So we are going to use the "round" function and also we going to pas in 2 so that I can specify n digits number which recall was the second perameter for round.
+#But we want to round the answer so we are going to make our to round the number. So we are going to use the "round" function and also we going to pass in 2 so that I can specify n digits number which recall was the second perameter for round.
 
 print(round(c/d, 3))
 
@@ -237,7 +237,8 @@ print(f"{m:,}")
     That's where our new function "def" comes.
     def is for define. If and when we want to define, create our own functions we can do so using now this keyword in python.
 """
-""" if we use_
+"""
+ if we use_
     name = input("what's your name? ")
     hello()
     print(name)
@@ -265,8 +266,8 @@ hello(name)
 def Hello(to="world"):
     print("hello,", to)
 Hello()
-#Here the program is going to greet "world" instead of the user, because we didn't put anythng in the "Hello(_)"
-#Because at first we put "to="world"". So the program is automatically going to put "world"
+#   Here the program is going to greet "world" instead of the user, because we didn't put anythng in the "Hello(_)"
+#   Because at first we put "to="world"". So the program is automatically going to put "world"
 Name = input("What's your name? ")
 Hello(Name)
 
@@ -3291,3 +3292,1167 @@ print(f"hello, {name}")
 
 # Fun fact why is it called walrus?
     # If we look at ":=" as like landscape it kinda looks like an walrus.
+
+
+# we will the original url or elon musk's twitter url. which is "https://twitter.com/elonmusk"
+
+url = input("URL: ").strip()
+
+username = url.replace("https://twitter.com/", "").title()
+print(f"Username: {username}")
+
+# But what if the user is a little weird and he answered like this_
+"""
+    URL: My URL is https://twitter.com/elonmusk
+    
+        Then what happens is we are gonna get the output like this_
+            Hello, My URL Is Elonmusk.
+
+    What the program did was just replaced the URL part.
+    But we need to get the only "after URl part."
+
+"""
+# So, we technically just have to remove the prefix along with the url.
+
+
+    # Prefix is a string or a substring that comes at the start of another. 
+
+url = input("URL: ").strip()
+
+username = url.removeprefix("https://twitter.com/").title()
+print(f"Username: {username}")
+
+# And it solves the problem.
+# But the name "Elon Musk" is showing "Elonmusk". That's another problem.
+
+
+# We are now introducing a new function called 're.sub'. Here the 'sub' stands for substitution.
+
+"""
+    Here is how it works_
+        re.sub(pattern, repl, string, count=0 , flag=0)
+            * The pattern in this case the link.
+            * The part we'll replace it with.
+            * The count and the flag.
+
+
+            Here 'count' means how many times we want to find and replace.
+            Like do we want to do all? just one or something like that.
+
+"""
+import re
+url = input("URL: ").strip()
+
+username = re.sub("https://twitter.com/", "", url).title()
+print(f"Username: {username}")
+ 
+
+
+         
+
+# We are now using row function to be more specific.
+
+import re
+url = input("URL: ").strip()
+
+username = re.sub(r"^(https?://)?(www\.)?twitter\.com/", "", url).title()
+print(f"Username: {username}")
+
+# Here the by the row function we specified_
+"""
+    Regular Expression: r"^(https?://)?(www\.)?twitter\.com/"
+    Explanation: This pattern matches the beginning of the string (^), 
+        followed by an optional http:// or https:// ((https?://)?), although we could use something like this_ http|https. But we just don't have to.
+        followed by an optional www. ((www\.)?), and then twitter.com/.
+    When you apply this pattern to the input 'https://twitter.com/elonmusk', it matches and removes 'https://twitter.com/', leaving 'elonmusk'.
+"""
+
+# BUT....We can see a big issue here.
+# If we use the code like this_
+import re
+url = input("URL: ").strip()
+
+username = re.sub(r"^(https?://)?(www\.)?twitter\.com/$", "", url).title()
+print(f"Username: {username}")
+
+# Then the program won't work.
+
+"""
+    If we use the dollar sign here then program will just fail.
+    This pattern is similar to the first one, but it has an additional $ at the end. 
+    In regular expressions, $ represents the end of a line or string. 
+    This means the pattern will only match URLs that end with twitter.com/.
+    When you apply this pattern to the input 'https://twitter.com/elonmusk', it doesn't match because the URL doesn't end with twitter.com/. Therefore, the replacement doesn't happen, and the original URL is returned.    
+
+"""
+
+# But there still remains arguable at least one problem with this solution in that.
+# Even though we are calling 're.sub' to substitute the URL with nothing by using ' "" '
+
+# And then we are blindly hoping that it'll work.
+
+"""
+    But what if the user instead of giving the URL of twitter, he gives something else.
+    What if they do something like that_ https://www.google.com/   (completely unrelated)
+        Then if we run this then we see that it just prints exactly that.
+
+        We have re.sub to get rid of something we don't want there. But to solve the problem why don't we just go back to re.search.
+
+"""
+
+import re 
+
+url = input("URL: ").strip().title()
+
+
+if matches := re.search(r"^https?://(www\.)?twitter\.com/(.+)$", url, re.IGNORECASE):
+    print(f"Username: {matches.group(1)}")
+# Now although it solves the invalid link issue but now it is showing 'Username: None' when we give a valid URL.
+# Also if we use the 'www.' then we'll see the 'www.' at the 'Username:' part.
+
+"""
+    What happened here is the subdomain is optional. 
+    And to make it optional we needed to use parentheses. And then we said zero or one.
+        That means we are unintentionally by design capturing the 'www.' or nothing if it wasn't there before.
+    But we have a second match over the (.+). As we have the second set of parentheses.
+
+        So if we just change the matches.group(1) into matches.group(2). 
+        And now it works.
+
+"""
+# So although we have solved the issue. Now we are facing a new problem.
+# If we use brackets then we are automatically capturing it.
+"""
+    a|b     either a or b
+    (..)    a group
+    (?:..)   non-capturing version
+
+    If we want to use parentheses logically because we need to but you don't want to bother capturing the result.
+
+"""
+
+"""
+    As we see on the previous code, I do need to surround the 'www.' with parentheses but we don't want to capture it.
+    As we did the '?' it means if exists it'll work and if it doesn't it doesn't hurt. But problem was it just captures the thing.
+    So we are now using (?:...) in this part.
+""" 
+
+import re 
+
+url = input("URL: ").strip().title()
+
+
+if matches := re.search(r"^https?://(?:www\.)?twitter\.com/(.+)$", url, re.IGNORECASE):
+    print(f"Username: {matches.group(1)}")
+
+# Now it works too.
+# But what if we want to end it with 'com'/'org'.
+
+import re 
+
+url = input("URL: ").strip().title()
+
+
+if matches := re.search(r"^https?://(?:www\.)?twitter\.(.+)/(.+)$", url, re.IGNORECASE):
+    if matches.group(1).lower() == "com" or matches.group(1).lower() == "org":
+        print(f"Username: {matches.group(2)}")
+
+# Here we used the 'https?://(?:www\.)?twitter\.(.+)/(.+)$' the first group is matched the the word 'com' then the programs continues.
+
+# But we can just use it the easy way.
+
+import re 
+
+url = input("URL: ").strip().title()
+
+
+if matches := re.search(r"^https?://(?:www\.)?twitter\.(?:com|org)/(.+)$", url, re.IGNORECASE):
+    print(f"Username: {matches.group(1)}")
+# And if we do it like this we won't have to capture them 
+
+
+# What if we want to just use it the usual way '[a-z0-9_]'. But we now want to accept the URL even if it ends with some other symbols
+
+import re 
+
+url = input("URL: ").strip().title()
+
+if matches := re.search(r"^https?://(?:www\.)?twitter\.com/([a-z0-9_]+)", url, re.IGNORECASE):
+    print(f"Username: {matches.group(1)}")
+
+
+"""
+    +: This is a quantifier that means "one or more". 
+    It specifies that the preceding character or group (in this case, the character class [a-z0-9_]) must occur one or more times.
+"""
+
+# Welcome to object oriented programming
+"""
+    Object-Oriented Programming (OOP) is a programming paradigm that is based on the concept of "objects", which can contain data and code to manipulate that data.
+    It's a way of organizing code to model real-world entities or abstract concepts
+"""
+
+name = input("Name: ")
+house = input("House: ")
+print(f"{name} from {house}")
+
+
+# We are now going to try the same thing with the functions.
+
+def main():
+    name = get_name()
+    house = get_house()
+    print(f"{name} is from {house}")
+
+
+def get_name():
+    name = input("Name: ")
+    return name 
+
+def get_house():
+    house = input("House: ")
+    return house 
+main()
+
+# But here we don't need to get the house/name variable and then returned it immediately. And then the use of those variables are none.
+
+# We can do the same thing without using the variables. We can just return the gotten input.
+
+def main():
+    name = get_name()
+    house = get_house()
+    print(f"{name} is from {house}")
+
+
+def get_name():
+    return input("Name: ")
+      
+
+def get_house():
+    return input("House: ")
+
+if __name__=="__main__":
+    main()
+
+# But now we want to define a function called 'get_student' and let 'get_student' do all of this work for us.
+
+# Theoretically it's gonna call get_name, get_house.
+
+# We are now trying to make just one function and then just using variables.
+
+
+def main():
+    name, house = get_student()         # Here we took as the input. And the firstly returned string went to the 'name' and the other one into the 'house' variable.
+    print(f"{name} is from {house}")
+
+def get_student():
+    name = input("Name: ")
+    house = input("House: ")
+    return name, house              # Here we did something new which is, we returned 2 variables into to defined function.
+
+if __name__ =="__main__":
+    main()
+# Although we used the the same variable in the defining the 'get_student' part as well as the main() part.
+# It just won't hurt to do so and it is more readable and understandable this way.
+
+
+# Introduction to tuple.
+"""
+    A tuple is an ordered, immutable collection of elements. 
+    In Python,a tuple is created by enclosing a comma-separated sequence of values within parentheses
+"""
+
+# A list we've seen before which is a data structure in python that we can change the values of.
+# But if we have no intention of changing the values of variables and we want to return effectively multiple values.
+# We don't even have to return it as a list. We can just return it as a tuple instead just by using a comma.
+
+
+# This is the exact thing what we did before.
+"""
+    We didn't just returned the two value per se whenever we use a comma in this way on line 9
+    we are actually returning one value which is a 'tuple'.
+        And inside of that tuple now are two values.
+        It is similiar spirit of returning one list with two things. The comma here tells python that we indeed want to return a tuple.
+
+"""
+# But there is more explicit syntax that we can use instead we can actually more verbosely put explicit parentheses around the values of this tuple.
+# Just to make more clear to the reader that this isn't two values per se.. But this one value with two things inside of it
+# And then we can just use one variable at the defining the main() function.
+
+def main():
+    student = get_student()         
+    print(f"{student[0]} is from {student[1]}")     # Here the student[0] = name, student[1] = house. 
+
+def get_student():
+    name = input("Name: ")
+    house = input("House: ")
+    return (name, house)              
+
+if __name__ =="__main__":
+    main()
+
+
+# What if we want to check the input with some issue and if it matches then we want to change the other input part the some especific string.
+
+def main():
+    student = get_student() 
+    if student[0] == 'padma':
+        student[1] = 'Ravenclaw'     # It is the especific string.
+             
+    print(f"{student[0]} is from {student[1]}")      
+
+def get_student():
+    name = input("Name: ")
+    house = input("House: ")
+    return (name, house)              
+
+if __name__ =="__main__":
+    main()
+
+
+"""
+    Now if we just use some random input then the program works perfectly.
+        But if we use the 'padma' (the especific issue/string) then are now facing a new error.
+    We are seeeing ''tuple' object does not support item assignment'. We are seeing that a typeerror has happened.
+            It means we cannot change location 0 or 1 or anything inside. And that's how the tuple works. We can't change anything.
+
+            
+    So if we want to override that we have to try some other way.
+        We are now going to use list to solve the problem.
+
+"""
+
+def main():
+    student = get_student() 
+    if student[0] == 'padma':
+        student[1] = 'Ravenclaw'     
+             
+    print(f"{student[0]} is from {student[1]}")      
+
+def get_student():
+    name = input("Name: ")
+    house = input("House: ")
+    return [name, house]             # We have used third brackets instead of the tuple with parentheses.
+
+if __name__ =="__main__":
+    main()
+
+# And it just solves the problem because we can override the inputs now .
+
+# What if we want to create dict. Not list/tuple.
+
+def main():
+    student = get_student()          
+    print(f"{student['name']} is from {student['house']}")      
+
+def get_student():
+    student = {}
+    student["name"] = input("Name: ")
+    student["house"] = input("House: ")
+    return student
+if __name__ =="__main__":
+    main()
+
+# Instead of returning any variable name student which we're gonna propose doesn't need to exist anymore.
+# Let's do something like that_
+
+
+def main():
+    student = get_student()          
+    print(f"{student['name']} is from {student['house']}")      
+
+def get_student():
+    name = input("Name: ")
+    house = input("House: ")
+    return {"name": name, "house": house}       # Here we just created and returned a dictionary in one line.
+if __name__ =="__main__":
+    main()
+
+
+
+# Let's bring back 'padma' again now.
+
+def main():
+    student = get_student()     
+    if student["name"] == "padma":
+        student["house"] = "Ravenclaw"   
+    print(f"{student['name']} is from {student['house']}")      
+
+def get_student():
+    name = input("Name: ")
+    house = input("House: ")
+    return {"name": name, "house": house}      
+if __name__ =="__main__":
+    main()
+
+# Python gave us some general purpose tool that's going to allow us to create our own datatypes as well and actually give them names.
+# And that's terminology is called class.
+"""
+    In Python, a class is a blueprint for creating objects. 
+    It defines a set of attributes (data members) and methods (functions) that the objects of the class will have. 
+    Essentially, a class provides a template for creating objects with specific characteristics and behaviors
+"""
+# In short classes allow you to invent your own data type in python and give them a name.
+# It is a primary feature of object oriented programming to be able to create your own objects.
+
+class Student:
+    ...
+
+def main():
+    student = get_student()          
+    print(f"{student.name} is from {student.house}")      
+
+def get_student():
+    student = Student()
+    student.name = input("Name: ")
+    student.house = input("House: ")
+    return student       
+if __name__ =="__main__":
+    main()
+
+
+# We could use it the other way too.
+
+class Student:
+    ...
+
+def main():
+    student = get_student()          
+    print(f"{student.name} is from {student.house}")      
+
+def get_student():
+    student = Student()
+    name = input("Name: ")
+    house = input("House: ")
+    student = Student(name, house)
+    return student       
+if __name__ =="__main__":
+    main()
+
+# By that fundamentally we are still getting the same output in the same way.
+# We just happen to be storing those return values in local variables but now we are setting the stage for more powerful features of classes.
+
+
+"""
+    Notice that we are deliverately passing to the Capital S student function name comma house. 
+    We are passing in arguments to the function. 
+    Now the student class is not going to do with those yet. 
+        But now we are sort of standardizing how we are passing data into the student class and it's gonna give me the chance to error check to those inputs.
+    It's going to allow me to ensure that it's a valid house that it's Gryffindor/Hufflepuff/Revenclaw/Slytherin or not just hitting enter or some random value that the user, 
+        Because we are putting those staffs into the Student class, we are gonna have more control over the correctness of my data.
+    
+        
+    Let's go to the student class where till now we just put '...' it turns out that in the context of classes there are not just attributes or instance variables we can put inside but also methods.
+        Classes come with certain methods or functions inside that we can define and they just behave in a special way by nature of how python works.
+
+"""
+
+class Student:
+    def __init__(self, name, house):
+        self.name = name
+        self.house = house
+
+
+def main():
+    student = get_student()
+    print(f"{student.name} from {student.house}")
+
+
+def get_student():
+    name = input("Name: ")
+    house = input("House: ")
+    student = Student(name, house)
+    return student
+
+
+if __name__ == "__main__":
+    main()
+
+"""
+    def: This keyword is used to define a function in Python.
+
+    __init__(self, name, house): This is the constructor method. It takes three parameters:
+
+    self: This parameter is a reference to the instance of the class itself. 
+            It is used to access and modify attributes and methods of the object.
+    name: This parameter is used to pass the name of the student when creating a new instance.
+    house: This parameter is used to pass the house of the student when creating a new instance.
+    Inside the __init__ method, self.name and self.house are attributes of the class Student. They store the name and house of each instance of the class.
+
+    In summary, the __init__ method is responsible for setting initial values for the attributes of a newly created instance of the Student class. This allows you to customize each instance with specific data when it is created.
+"""
+
+# If the user enters nothing but space as the input.
+
+class Student:
+    def __init__(self, name, house):
+        if not name:                        # This is more pythonic and it's the same as "if name = '' "
+            print("Missing name.")
+        self.name = name
+        self.house = house
+
+
+def main():
+    student = get_student()
+    print(f"{student.name} from {student.house}")
+
+
+def get_student():
+    name = input("Name: ")
+    house = input("House: ")
+    student = Student(name, house)
+    return student
+
+
+if __name__ == "__main__":
+    main()
+
+# But this is not good enough. It does not suffice to just print out missing name and then the rest of the code go through.
+# What can we do instead then.
+
+# We could use 'sys.exit' and say something like 'missing name'
+
+import sys
+
+class Student:
+    def __init__(self, name, house):
+        if not name:                        
+            sys.exit("Missing name.")
+        self.name = name
+        self.house = house
+
+
+def main():
+    student = get_student()
+    print(f"{student.name} from {student.house}")
+
+
+def get_student():
+    name = input("Name: ")
+    house = input("House: ")
+    student = Student(name, house)
+    return student
+
+
+if __name__ == "__main__":
+    main()
+
+# But this is a really obnoxious solution to this problem.
+"""
+    Just because the user messed up and called a function with an invalid name, we are gonna quit the  whole program? \
+    That's really extreme of a response.
+    We don't want to exit the program in some arbitrary line just because the input was invalid.
+
+"""
+
+# We do now have a mechanism for signaling errors.
+
+# Unfortunately we can't do something like this_
+
+
+class Student:
+    def __init__(self, name, house):
+        if not name:                        
+            return None                         # We can't do something like this.
+        self.name = name
+        self.house = house
+
+
+def main():
+    student = get_student()
+    print(f"{student.name} from {student.house}")
+
+
+def get_student():
+    name = input("Name: ")
+    house = input("House: ")
+    student = Student(name, house)
+    return student
+
+
+if __name__ == "__main__":
+    main()
+
+# Because it's actually too late to return none.
+# If we see after some lines, we can see that the 'student = Student(name, house)'.
+# The student is already created. There is an object somewhere in the computers memory that is stuctured as a student and it just hasn't any values inside of it.
+
+# So the object exists. So we can't say that it doesn't.
+
+# So it's up to us to signal an error.
+
+# It's time we create our own errors.
+
+
+# It turns out in python there is another keyword related to exceptions that python itself uses to all those exceptions.
+
+# Like ValueError or other such exceptions to come with python. We are now going to raise them by ourselves when something goes wrong.
+# But not wrong enough that we want to quit and exit the whole program but enough that we need to somehow alert the programmer that there has been an error.
+
+
+class Student:
+    def __init__(self, name, house):
+        if not name:                        
+            raise ValueError                        # We are now calling the ValueError.
+        self.name = name
+        self.house = house
+
+
+def main():
+    student = get_student()
+    print(f"{student.name} from {student.house}")
+
+
+def get_student():
+    name = input("Name: ")
+    house = input("House: ")
+    student = Student(name, house)
+    return student
+
+
+if __name__ == "__main__":
+    main()
+
+# We can even be more precise. We don't have to raise a generic ValueError and let the programmer figure out what went wrong.
+
+# We can treat ValueError and all exceptions in python like functions and actually pass to them an explanatory messege like quoted messeges like this.
+
+class Student:
+    def __init__(self, name, house):
+        if not name:                        
+             raise ValueError("MIssing Name")       # We have now left the messege with the error.                  
+        self.name = name
+        self.house = house
+
+
+def main():
+    student = get_student()
+    print(f"{student.name} from {student.house}")
+
+
+def get_student():
+    name = input("Name: ")
+    house = input("House: ")
+    student = Student(name, house)
+    return student
+
+
+if __name__ == "__main__":
+    main()
+
+
+
+# We are now making the demands in respect of houses.
+
+class Student:
+    def __init__(self, name, house):
+        if not name:                        
+             raise ValueError("MIssing Name") 
+        if house not in ["Gryffindor","Hufflepuff","Ravenclaw", "Slytherin"]:
+            raise ValueError("Invalid house.")                       
+        self.name = name
+        self.house = house
+
+
+def main():
+    student = get_student()
+    print(f"{student.name} from {student.house}")
+
+
+def get_student():
+    name = input("Name: ")
+    house = input("House: ")
+    student = Student(name, house)
+    return student
+
+
+if __name__ == "__main__":
+    main()
+
+# And that's how we are now creating our own errors and telling the user what is wrong with the input.
+
+"""
+    So here we now see a capability that we can do with classes that we can't with dictionaries.
+    If we add a key/attribute to a dictionary then it's going nowhere. Evem if the name is empty or the house is a completely random string of text it's still going into that dictionary.
+
+        But with a class and by the way of this init method we can now control excatly what is going to be installed if we will inside of this object.
+            We have more control now over the correctness.
+            
+"""
+
+class Student:
+    def __init__(self, name, house, patronus):
+        if not name:
+            raise ValueError("Missing name")
+        if house not in ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"]:
+            raise ValueError("Invalid house")
+        self.name = name
+        self.house = house
+        self.patronus = patronus
+
+    def __str__(self):
+        return f"{self.name} from {self.house}"
+
+
+def main():
+    student = get_student()
+    print(student)
+
+
+def get_student():
+    name = input("Name: ")
+    house = input("House: ")
+    patronus = input("Patronus: ")
+    return Student(name, house, patronus)
+
+
+if __name__ == "__main__":
+    main()
+
+"""
+    This defines a class named Student.
+    It has two methods: __init__ and __str__.
+    __init__ is a special method (constructor) that initializes the attributes of a Student object when it is created.
+    __str__ is another special method that specifies how an instance of Student should be represented as a string when printed.
+
+
+    The __init__ method takes four parameters: self, name, house, and patronus.
+    self is a reference to the instance of the class itself.
+    It checks if name is provided and if house is one of the valid options: "Gryffindor", "Hufflepuff", "Ravenclaw", or "Slytherin".
+    If the checks pass, it initializes the attributes name, house, and patronus for the object.
+
+    ___str__-
+        This method overrides the default behavior of how a Student object is converted to a string.
+    When you print a Student object, it will return a string formatted as "{name} from {house}".
+    
+    main()-
+    The main function is the entry point of the program.
+    It calls the get_student function to create a Student object and then prints it.
+"""
+
+# Now we are going even one more step further.
+"""
+    What if we want to create more functionality for a student so that your class really represents this real world/fantasy world,
+        Where students not only have names and houses or patronuses, they also have functionality.
+            They have actions they can perform like casting a charm/ a spell.
+"""
+# Now we are implementing a function called charm.
+# Let's define our very own function as follows.
+
+
+class Student:
+    def __init__(self, name, house, patronus):
+        if not name:
+            raise ValueError("Missing name")
+        if house not in ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"]:
+            raise ValueError("Invalid house")
+        self.name = name
+        self.house = house
+        self.patronus = patronus
+
+    def __str__(self):
+        return f"{self.name} from {self.house}"
+
+
+def main():
+    student = get_student()
+    print(student)
+
+
+def get_student():
+    name = input("Name: ")
+    house = input("House: ")
+    patronus = input("Patronus: ")
+    return Student(name, house, patronus)
+
+
+if __name__ == "__main__":
+    main()
+
+
+class Student:
+    def __init__(self, name, house, patronus):
+        if not name:
+            raise ValueError("Missing name")
+        if house not in ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"]:
+            raise ValueError("Invalid house")
+        self.name = name
+        self.house = house
+        self.patronus = patronus
+
+    def __str__(self):
+        return f"{self.name} from {self.house}"
+
+    def charm(self):
+        match self.patronus:
+            case "Stag":
+                return "🐴"
+            case "Otter":
+                return "🦦"
+            case "Jack Russell Terrier":
+                return "😹"   
+            case _:                                 # If self.patronus does not match any of the previous cases ("Stag", "Otter", or "Jack Russell Terrier"), this catch-all case will be triggered, and the function will return "/".
+                return "/"             
+
+def main():
+    student = get_student()
+    print("Expecto Patronum!")
+    print(student.charm())
+
+
+def get_student():
+    name = input("Name: ")
+    house = input("House: ")
+    patronus = input("Patronus: ")
+    return Student(name, house, patronus)
+
+
+if __name__ == "__main__":
+    main()
+
+"""
+    print(student.charm()): This line calls the charm() method of the Student object student.
+      This method is responsible for determining and returning the emoji associated with the patronus.
+      The result is then printed to the console.
+
+    Overall, these lines orchestrate the flow of the program.
+      They prompt the user for input to create a Student object, 
+      display a message, and then print the emoji associated with the patronus.
+"""
+
+
+# We can even override the input like this.
+
+# As it turns out with classes and objects thereof you are I can still access those instance variables using this familiar dot notation.
+# So we can actually change them later if we want.
+# And this will effectively circumvent the if condition and the other if condition in our init method.
+    # Because that is only called when we first create the student object,
+
+class Student:
+    def __init__(self, name, house, patronus):
+        if not name:
+            raise ValueError("Missing name")
+        if house not in ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"]:
+            raise ValueError("Invalid house")
+        self.name = name
+        self.house = house
+        self.patronus = patronus
+
+    def __str__(self):
+        return f"{self.name} from {self.house}"
+
+               
+
+def main():
+    student = get_student()
+    student.house = "120, Baker street, New york."      # There is nothing stopping me at the moment to change the house or the name after.
+    print(student)
+    
+
+def get_student():
+    name = input("Name: ")
+    house = input("House: ")
+    patronus = input("Patronus: ")
+    return Student(name, house, patronus)
+
+
+if __name__ == "__main__":
+    main()
+
+# FYI_ In the 5th line of code we made a ValueError code.
+# So, how this code actually runs is, we have to make sure that the input actually matches the demand. Otherwise it's going to show the ValueError.
+# Then still the input is going to be overridden.
+
+# In the spirit of programming a little more defensively allow me to introduce another feature of python as well namely "properties"
+"""
+    So property is really an attribute that has even more defence mechanisms put into place.
+    A little more functionality implemented by you to prevent programmers like me and you for messing things up like this attribute.
+
+        Properties is going to be an attribute where we are going to have more control over.
+
+"""
+# We are going to implement them like this "@property" which is technically a function property in python 
+# We are going to see some new 'at syntax' that allows us to decorate functions and this too is a term of art in the world of python.
+
+# What we are saying is, in python we can have decorators which are functions that modify the behavior of other functions if you will.
+
+class Student:
+    def __init__(self, name, house):
+        if not name:
+            raise ValueError("Invalid name")
+        self.name = name
+        self.house = house
+
+    def __str__(self):
+        return f"{self.name} from {self.house}"
+# Getter
+    def house(self):
+        return self.house
+# Setter
+    def house(self, house):
+        self.house = house 
+
+def main():
+    student = get_student()
+    print(student)
+
+
+def get_student():
+    name = input("Name: ")
+    house = input("House: ")
+    return Student(name, house)
+
+
+if __name__ == "__main__":
+    main()
+
+
+# let's try it another way.
+
+class Student:
+    def __init__(self, name, house):
+        if not name:
+            raise ValueError("Invalid name")
+        self.name = name
+        self.house = house
+
+    def __str__(self):
+        return f"{self.name} from {self.house}"
+# Getter
+    @property
+    def house(self):
+        return self._house
+# Setter
+    @house.setter
+    def house(self, house):
+        if house not in ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"]:
+            raise ValueError("Invalid house")
+        self._house = house 
+
+def main():
+    student = get_student()
+    print(student)
+
+
+def get_student():
+    name = input("Name: ")
+    house = input("House: ")
+    return Student(name, house)
+
+
+if __name__ == "__main__":
+    main()
+
+# Here's a step-by-step explanation of the code:
+"""
+    1. Class Definition:
+        class Student:
+        Defines a class named Student.
+
+    2. Constructor Method:
+
+            def __init__(self, name, house):
+                if not name:
+                    raise ValueError("Invalid name")
+                self.name = name
+                self.house = house
+    The __init__ method is the constructor method, which initializes a new instance of the class.
+    It takes two parameters: name and house.
+    It first checks if the provided name is not empty. If it is empty, it raises a ValueError.
+    It then assigns name and house to the respective attributes of the instance (self).
+    Note: In the original code, self.house is used to call the setter method. This could lead to a recursive call and an error. I've corrected it in the explanation
+
+    3. String Representation Method:
+            def __str__(self):
+                return f"{self.name} from {self.house}"
+    The __str__ method defines how the class should be represented as a string when using print or similar functions.
+    In this case, it returns a formatted string containing the name and house of the student.
+
+    4. Getter Method using Property:
+            @property
+            def house(self):
+                return self._house
+    This is a getter method for the house attribute.
+    The @property decorator is used to define a method as a "getter". It allows you to access the method like an attribute.
+    The getter returns the value of the private attribute _house.
+
+    5. Setter Method using Property:
+        @house.setter
+        def house(self, house):
+            if house not in ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"]:
+                raise ValueError("Invalid house")
+            self._house = house 
+        This is a setter method for the house attribute.
+        The @house.setter decorator is used to define a method as a "setter".
+        The setter method takes a parameter house, representing the new value.
+        It first checks if the provided house is one of the valid options. If not, it raises a ValueError.
+        If the value is valid, it assigns it to the private attribute _house.
+
+    
+    6. Main Function and User Input:
+         def main():
+            student = get_student()
+            print(student)
+        The main function is defined to demonstrate the usage of the Student class.
+        It calls the get_student function to get user input for creating a student instance and then prints it.
+    
+
+    7. Function to Create Student:
+         def get_student():
+            name = input("Name: ")
+            house = input("House: ")
+            return Student(name, house)
+        The get_student function prompts the user for a name and house, and then creates and returns a Student object.
+     
+
+    8. Running the Program:
+            if __name__ == "__main__":
+            main()
+
+
+This block ensures that the main function is executed when the script is run directly (not imported as a module).
+Overall, this code defines a Student class with a getter and setter method for the house attribute, ensuring that the house is one of the valid options. It also provides a way to create a Student object and print its information.
+           
+
+        
+"""
+
+
+
+# If we run the program now then, we are still going to see the errors.
+"""
+    Let's type in gryffindor which will at least pass our checks that's induced by init.
+    But the line 24 is going to trigger the same setter to be called and the ValueError is going to be raised.
+
+"""
+# What is the solution to that then?
+# We can change the 'student.house' to the 'student._house'
+# Because the instance variable is now called the '_house'. The property is called 'house' no '_'. 
+
+# But the "_" attribute implemented as an instance variable is still called 'underscore house'
+
+
+# Now if we run the code then_
+
+class Student:
+    def __init__(self, name, house):
+        if not name:
+            raise ValueError("Invalid name")
+        self.name = name
+        self.house = house
+
+    def __str__(self):
+        return f"{self.name} from {self.house}"
+# Getter
+    @property
+    def house(self):
+        return self._house
+# Setter
+    @house.setter
+    def house(self, house):
+        if house not in ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"]:
+            raise ValueError("Invalid house")
+        self._house = house 
+
+def main():
+    student = get_student()
+    student._house = "Number Four, Privet Drive"     # We added the underscore to make sure that it is an instance variable. 
+    print(student)
+
+
+def get_student():
+    name = input("Name: ")
+    house = input("House: ")
+    return Student(name, house)
+
+
+if __name__ == "__main__":
+    main()
+# Now we slipped through the ValueError.
+
+"""
+    Python itself allows you to specify that certain instance variables can be public and accessible to anyone's code.
+    Or protected or private which means that no one else should be able to change this values
+
+    That's the underscore.
+        In python if a instance variable starts with an underscore starts with an underscore_
+            DON'T TOUCH IT.
+        The underscore is meant to signify a convention that this is meant to be private but it really means 'please don't touch this.' 
+
+    
+    Sometimes there is 2 underscores which we can use too.
+        That's even greated effort by the coder to say "REALLY DON'T TOUCH THIS".
+    But there is nothing in python which is stopping you or me from circumventing all of these mechanisms.
+
+        
+"""
+
+"""
+    Single Underscore Prefix _var:
+
+    A single underscore at the beginning of a variable or method name (_var) is a convention indicating that the variable or method is intended for internal use or it's a non-public part of the API.
+    It's a signal to the programmer that this variable or method is considered "protected" and should not be accessed directly from outside the class/module. However, it's not enforced by the Python interpreter.
+    
+    
+    Double Underscore Prefix __var:
+
+    A double underscore at the beginning of a variable name (__var) triggers name mangling. Python will rename the variable in a way that makes it harder to create subclasses that accidentally override private attributes and methods.
+    This is not to make it "private" in the strictest sense, but rather to avoid name conflicts in subclasses. The actual name is transformed to _classname__var, where "classname" is the name of the current class. This makes it less likely that a subclass will accidentally override a private attribute.
+"""
+
+# It might come as quite a surprise that even though might have identified OOP by name now.
+# But we've all been using classes and objects forever now in this class.
+
+"""
+    In fact if we think back on one of the very first things we did in the class, we used integers.
+    And just got integers from the user.
+        But if we see the docutmentation for integers_ "docs.python.org/3/library/functions.html#int"
+            We can actually find int itself is and has been for weeks a class and in fact this is the signature of the constructor call for an INT
+"""
+"""
+    In fact_ "class int(x, base=10)"
+    This is the signature of the constructor  call for an int where by we pass in x 
+"""
+
+# Strings too are also a class. If you have used str.lower(), 
+# you were using a method that came within the str class. 
+# You can learn more in Python’s documentation of str.
+
+
+# list is also a class. Looking at that documentation for list, you can see the methods that are contained therein, like list.append().
+# You can learn more in Python’s documentation of list.
+
+# dict is also a class within Python. You can learn more in Python’s documentation of dict.
+
+# To see how you have been using classes all along, go to your console and type code type.py and then code as follows:
+print(type(50))
+
+# We are going to see something like this "<class 'int'>"
+# Notice how by executing this code, it will display that the class of 50 is int.
+
+
+    # The program actually prints out the type of the number 50.
+        # It is not something we want to show to the user. 
+
+# Write if we write code something like this_
+print(type("Hello, world"))
+# Now we are going to see something like this_"<class 'str'>"
+    # There it is. We can now see that the str is also a class
+
+# We can do this a lot of staffs_
+print(type([]))
+# Now we are going to see something like this_"<class 'list'>"
+    # There it is. We can now see that the list is also a class
+
+# We might recall we can create an empty list by literally doing this_
+print(type(list()))
+# Here we go again_"<class 'list'>"
+    
+# Let's do dictionary then_
+print(type({}))
+# This code will indicate this is of the class dict
+
+# As the list we can just do the same here too.
+print(type(dict()))
+# This code will also indicate this is of the class dict.
+
