@@ -4456,3 +4456,308 @@ print(type({}))
 print(type(dict()))
 # This code will also indicate this is of the class dict.
 
+# Sometimes, wa want to add functionality to ac class itself,l not to instances of that class.
+
+# "@classmethod" is a function that we can use to add functionality to class as whole.
+
+import random
+
+class Hat:
+    def __init__(self):
+        self.houses = ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"]
+
+    def sort(self, name):
+        print(name, "is in", random.choice(self.houses))
+
+hat = Hat()         # Here we instantiated a hat object.
+hat.sort("Harry")    # If we do this let's propose that it prints out what house that student should be in.
+
+# We created a variable called hat in lower case and instantiate a hat object.
+
+# So no matter what the hat class ends up with, this is the common syntax for instantiating an object of a certain class.
+ 
+
+"""
+    def sort(self, name):: This defines a method named sort which takes two arguments: self (implicitly passed and refers to the object itself) and name. 
+    This method will be used to sort a person into a Hogwarts house.
+
+    print(name, "is in", random.choice(self.houses)): This line prints a message indicating the name and the randomly selected Hogwarts house. 
+    random.choice(self.houses) is used to randomly select one of the four houses.
+"""
+
+# hat = Hat(): This line creates an instance of the Hat class and assigns it to the variable hat.
+
+"""
+    hat.sort("Harry"): This line calls the sort method on the hat object, passing the string "Harry" as the name argument. 
+    This will randomly select a Hogwarts house and print a message indicating which house Harry is sorted into.
+"""
+
+import random
+
+class Hat:
+
+    houses = ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"]
+
+    @classmethod
+    def sort(cls, name):
+        print(name, "is in", random.choice(cls.houses))
+
+
+Hat.sort("Harry")
+
+
+# We could do the same thing this way too.
+
+import random
+
+houses = ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"]
+
+
+def sort(name):
+    print(name, "is in", random.choice(houses))
+
+
+sort("Harry")
+
+# And it still works
+
+# What we are trying to do is, we are actually trying to different way of meodeling the world.
+
+# And no it seems too simple and it's not truely compeling.
+# But when we getting more advance and start to colaborate wit other people's code then the code actually becomes messy.
+# That's where the 'class' actually comes. It organizes the code.
+
+# Let's go into the Harry Potter world try to make classes for student names, teacher's name, houses, where they are from and all that.
+
+
+class Student:
+    def __init__(self, name, house):
+        if not name:
+            raise ValueError("Invalid name")
+        self.name = name
+        self.house = house
+
+    def __str__(self):
+        return f"{self.name} from {self.house}"
+    
+    
+    @classmethod
+    def get(cls):                      # We have to give it at least one argument, in this case 'cls'
+        name = input("Name: ")
+        house = input("House: ")
+        return cls(name, house)        # It's an automatically reference to the class itself.
+
+def main():
+    student = Student.get()     
+    print(student)
+
+
+
+if __name__ == "__main__":
+    main()
+
+# Here the class is actually all of my student specific functionality.
+# That is to say if I have functionality and data related to student you the programmer my would assume that it's all bundled up.
+
+"""
+    And yet if we scroll down further we can see there is function called get student that exists else where in the file.
+    And it prompts the user for a name, prompts the user for a house
+        And then it creates the student objects and retuerns the values into it.
+        
+"""
+# We removed the 'get_student' function.
+"""
+    This might seem weird cause now I am actually calling 'cls' and now I am passing an argument.
+    So we did a final fix here by saying that it's a 'classmethod'.
+"""
+# What are we actually doing here_
+"""
+    Inside of my student class I now have a function called get. It is I shall claim a class method.
+    It means I can call this method with instantiating a student object first.
+        There in lies the potential of the chicken in the egg problem.
+            We actually did the 'chicken in the egg problem'. Cause_
+
+            It would be weird if I had to create a student object in order to call get/ in order to get another student object ...and that just sounds messy.
+                So why don't we just get a student via 'classmethod' which by definition does not require us to create a student object first.
+
+"""
+
+# Here the get functionality is built into the class.
+# So we edited the the main function and called out the get method like this "Student.get()"
+# The get function is actually built inside the class, so if we call it like this, it should work.
+
+# What if we want to call the main function at the very beginning. Like this_
+
+def main():
+    student = Student.get()     
+    print(student)
+
+class Student:
+    def __init__(self, name, house):
+        if not name:
+            raise ValueError("Invalid name")
+        self.name = name
+        self.house = house
+
+    def __str__(self):
+        return f"{self.name} from {self.house}"
+    
+    
+    @classmethod
+    def get(cls):                      
+        name = input("Name: ")
+        house = input("House: ")
+        return cls(name, house)        
+
+if __name__ == "__main__":
+    main()
+
+# But if we run this code this will work but it shouldn't.
+# Because the code is actually mentioning student which does not exists. until we go below the code.
+
+"""
+    The reason why the code works is because of the second last line of the code.
+        Here we are not actually calling the main until the very end.
+        It just means python have to read everything from top to bottom. So technically everything exist.
+
+"""
+
+# But still it is cleaner to use it the previous way.
+"""
+    It turns out that besides @classmethods, which are distinct from instance methods, there are other types of methods as well.
+    Using @staticmethod may be something you might wish to explore. While not covered explicitly in this course, you are welcome to go and learn more about static methods and their distinction from class methods.
+"""
+
+# Introduction to Inheritence.
+
+# Inheritence is perhaps the most powerful feature of object oriented programming.
+
+"""
+    Inheritance is a fundamental concept in object-oriented programming (OOP) that allows one class (the child or subclass) to inherit attributes and methods from another class (the parent or superclass). 
+    This enables the child class to reuse and extend the functionality of the parent class.
+"""
+
+# It just so happens that you can create a class that “inherits” methods, variables, and attributes from another class
+
+# Both students and professors are at the end of the day wizards. So now we combined both of the classes.
+# We defined a third class for instance called wizaed that has any of the common attributes for students and professors
+
+# But the only thing they have in common is a name and a name in student and professor respectively.
+# Let's factor that out first.
+
+class Wizard:
+    def __init__(self, name):
+        if not name:
+            raise ValueError("Missing name.")
+        self.name = name                        # We can only adding name because the common thing between professors and students is name. Not house or subject.
+    ...
+
+class Student:
+    def __init__(self, name, house):
+        if not name:
+            raise ValueError("Missing name.")
+        self.name = name
+        self.house = house
+
+    ...
+
+class Professor:
+    def __init__(self, name, subject):
+        if not name:
+            raise ValueError("Missing name.")
+        self.name = name
+        self.subject = subject
+
+    ...
+
+
+# Now that we aded 3 classes, we don't have to raise the ValueError in every class. 
+# Also we can now remove the assignment 'self.name = name' because we are doing that in wizard. 
+
+class Wizard:
+    def __init__(self, name):
+        if not name:
+            raise ValueError("Missing name.")           # We don't have to raise ValueError because we brought the names from other classes in here. So, if we check this, we are actually checking every classes. And same goes for 'self.name'
+        self.name = name               
+    ...
+
+class Student:
+    def __init__(self, name, house):
+        self.house = house
+
+    ...
+
+class Professor:
+    def __init__(self, name, subject):
+        self.subject = subject
+
+    ...
+# How do we now link these 2 classes together.
+
+# The way we can prescribe inheritance where by one class should inherit from another, we can do something like this.
+
+class Wizard:
+    def __init__(self, name):
+        if not name:
+            raise ValueError("Missing name.")           
+        self.name = name               
+    ...
+
+class Student(Wizard):
+    def __init__(self, name, house):
+        super().__init__(name)                                     # It is a reference to the super class of this class.
+        self.house = house
+
+    ...
+
+class Professor(Wizard):
+    def __init__(self, name, subject):
+        super().__init__(name)
+        self.subject = subject
+    ...
+wizard = Wizard("Albus")
+student = Student("Harry", "Gryffindor")                                # We fixed the values
+professor = Professor("Severus", "Defence Against the Dark Arts")
+
+# Here a student inherits from or is a subclass of wizard which conversely is the superclass of the student class.
+
+# The 'Student(Wizard)' means when I define a student class go ahead and and inherit all of the characteristics of the Wizard as well.
+# We are going to do the same thing for professor too.
+
+# Also we want to fix that we also want to use the functionality in the wizard classes init method.
+
+"""
+    The way to do that is as follows.
+    Let's go to the init method of the student. And we are going to call a funtion called "super()"
+
+    So if this class if Student the super class aka the parent class is wizard. We are now actually connected with the super class but now we have to access into the objects.
+
+    To do so_
+    we did this 'super().__init__(name)'
+        By this we accessed the init method of the super class and called the name of the class.
+    And we are gonna do the same in the Professor class.
+
+"""
+# While we have just introduced inheritance, we have been using this all along during our use of exceptions.
+
+# It just so happens that exceptions come in a heirarchy, where there are children, parent, and grandparent classes. These are illustrated below:
+"""
+BaseException
+ +-- KeyboardInterrupt
+ +-- Exception
+      +-- ArithmeticError
+      |    +-- ZeroDivisionError
+      +-- AssertionError
+      +-- AttributeError
+      +-- EOFError
+      +-- ImportError
+      |    +-- ModuleNotFoundError
+      +-- LookupError
+      |    +-- KeyError
+      +-- NameError
+      +-- SyntaxError
+      |    +-- IndentationError
+      +-- ValueError
+ ...
+    
+"""
