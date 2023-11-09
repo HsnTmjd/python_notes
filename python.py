@@ -1,11 +1,6 @@
 # Welcome to python.
 # Our purpose here is to learn python from ground zero.
-"""
-    Used variable-
-    x-user's name
-    y-Name of the user's mother
-    area-Where does she lives?
-"""
+
 # Ask user for their name
 x = input("What's your name buddy? " )
 # We are adding the input into the variable
