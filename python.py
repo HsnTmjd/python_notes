@@ -5109,3 +5109,26 @@ print(meows)
 # As it turns out our meow function only has a side effect. It just prints out meow a number of times.
 # It doesn't have any returned value.
 
+# As it turns out our meow function only has a side effect. It just prints out meow a number of times.
+# It doesn't have any returned value.
+
+# As if it would if there were literally the return keyword.
+# By default then when a function in python does not explicitly return a value it's ip.icit return value is effect "None".
+# So what we are seeing here is in line 8, because we are assigning the return value of meow 
+# Which is none to our meow variable, so the line 8 is now incorrectly printing None.
+
+# Because we accidently thought that 'meow' returns a value but it doesn't so the returned value of it is none.
+
+
+# So how can we go about catching this kind of mistake too?
+# We might make this mistake but may be with less frequency if I'm in the habit of annotating my code with this new feature called 'type hints'
+
+# Here is how we implement the feature.
+
+def meow(n: int) -> None:           # It means that our meow function by design returns None.
+    for _ in range(n):
+        print("meow")
+
+number: int = int(input("Number: "))
+meows: str = meow(number)
+print(meows)
