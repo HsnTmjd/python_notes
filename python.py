@@ -1,6 +1,11 @@
 # Welcome to python.
 # Our purpose here is to learn python from ground zero.
-
+"""
+    Used variable-
+    x-user's name
+    y-Name of the user's mother
+    area-Where does she lives?
+"""
 # Ask user for their name
 x = input("What's your name buddy? " )
 # We are adding the input into the variable
@@ -4756,3 +4761,351 @@ BaseException
  ...
     
 """
+# Some operators such as + and - can be “overloaded” such that they can have more abilities beyond simple arithmetic
+
+# For example "+" is never used for just addition per say, we use it for joining two strings.
+
+# To understand more about this let's suppose a bank in the harry potter world.
+# And the type of money that exists in the world of harry potter are called galleons and sickles and canucks.(They are in descending order of value)
+
+
+# Let's create a class called "Vault"
+# When we create a vault and create create the arguments (types of money) I want to initialize it with some number of galleons, sickles and some number of Canucks.
+
+# The programmer is able to pass in one or more of those values ideally but they can be optional. So we'll give them default.
+ 
+
+class Vault:
+    def __init__(self, galleons = 0, sickles = 0, knuts = 0):       # It is saying the default values are zero. The programmer can set it to whatever number they want.
+        self.galleons = galleons
+        self.sickles = sickles
+        self.knuts = knuts
+            # Now the values are passed in.
+
+# Let's create a Vault for potter.
+
+potter = Vault(100, 50, 25)     # It means potter has 100 galleons, 50 sickles, 25 knuts.
+print(potter)
+
+"""
+    If we print it this way the program seems to work and no syntax errors or something. But we are not getting the perfect output.
+
+        That is because the objects of the vault is not in sting.
+        We have to print it in the string format.
+
+        So we need to put "__str__" method into the program.
+
+"""
+class Vault:
+    def __init__(self, galleons = 0, sickles = 0, knuts = 0):
+        self.galleons = galleons
+        self.sickles = sickles
+        self.knuts = knuts
+            # Now the values are passed in.
+
+    def __str__(self):
+        return f"{self.galleons} Galleons, {self.sickles} Sickles, {self.knuts} Knuts. "
+
+
+potter = Vault(100, 50, 25)     # It means potter has 100 galleons, 50 sickles, 25 knuts.
+print(potter)
+
+# Now if we run the code, Now we see everything is perfectly shown as the output.
+
+# Let's create a weasley variable into the program along side the potter variable. 
+class Vault:
+    def __init__(self, galleons = 0, sickles = 0, knuts = 0):
+        self.galleons = galleons
+        self.sickles = sickles
+        self.knuts = knuts
+            
+
+    def __str__(self):
+        return f"{self.galleons} Galleons, {self.sickles} Sickles, {self.knuts} Knuts. "
+
+
+potter = Vault(100, 50, 25)     
+print(potter)
+
+Weasley = Vault(20, 70, 35)     
+print(Weasley)
+
+# Let's do a total of them both. 
+class Vault:
+    def __init__(self, galleons = 0, sickles = 0, knuts = 0):
+        self.galleons = galleons
+        self.sickles = sickles
+        self.knuts = knuts
+            
+
+    def __str__(self):
+        return f"{self.galleons} Galleons, {self.sickles} Sickles, {self.knuts} Knuts. "
+
+
+potter = Vault(100, 50, 25)     
+print(potter)
+
+Weasley = Vault(20, 70, 35)     
+print(Weasley)
+
+# It works perfectly.
+
+
+galleons = potter.galleons + Weasley.galleons
+sickles = potter.sickles + potter.sickles
+knuts = potter.knuts + Weasley.knuts                    # Here we actually override the variables.
+
+total = Vault(galleons, sickles, knuts)     # Here we passed in new variables.
+print(total)
+
+# And still the code works. 
+
+class Vault:
+    def __init__(self, galleons = 0, sickles = 0, knuts = 0):
+        self.galleons = galleons
+        self.sickles = sickles
+        self.knuts = knuts
+            
+
+    def __str__(self):
+        return f"{self.galleons} Galleons, {self.sickles} Sickles, {self.knuts} Knuts. "
+
+    def __add__(self, other):
+        galleons = self.galleons + other.galleons           # The 'self.galleons' is for potter and the 'other.galleons' is for weasley's.
+        sickles = self.sickles + other.sickles
+        knuts = self.knuts + other.knuts
+        return Vault(galleons, sickles, knuts)
+
+
+potter = Vault(100, 50, 25)     
+print(potter)
+
+Weasley = Vault(20, 70, 35)     
+print(Weasley)
+
+total = potter + Weasley 
+print(total)
+
+"""
+    The code encapsulates the addition logic within the __add__ method. If there are changes to the addition logic in the future, 
+    you only need to update one place (the __add__ method).
+"""
+"""
+    How the code works_
+        The "__add__" method actually works as the addition operator.
+        When we do "total = potter + Weasley" then python actually wants to add the Vaults.
+            And that is where the "__add__" method comes. When the "+" sign comes then python calls out the __add__ method.
+            Where the objects of the class becomes additioned.
+
+ """
+
+students = [
+    {"name": "Harry", "house": "Gryffindor"},
+    {"name": "Ron", "house": "Gryffindor"},
+    {"name": "Draco", "house": "Slytherin"},
+    {"name": "Ron", "house": "Ravenclaw"}
+]
+
+houses = []                                     # We could also use 'list()'
+for student in students:
+    if student["house"] not in houses:
+        houses.append(student["house"])
+for house in sorted(houses):
+    print(house)
+
+
+# Here we had to do the 'if else' into the code.
+# What if we don't want do that.
+
+# We can to the code this way.
+# It turns out we can use the built-in set features to eliminate duplicates.
+
+students = [
+    {"name": "Harry", "house": "Gryffindor"},
+    {"name": "Ron", "house": "Gryffindor"},
+    {"name": "Draco", "house": "Slytherin"},
+    {"name": "Ron", "house": "Ravenclaw"}
+]
+
+houses = set()                                     
+for student in students:
+    houses.add(student["house"])
+for house in sorted(houses):
+    print(house)
+
+# Notice how no checking needs to be included to ensure there are no duplicates.
+# The set object takes care of this for us automatically.
+
+
+"""
+    In some languages there is a notion of global variables. Where by we can define a variable that's either local to a function
+    Or if we put a variable outside of all of your functions perhaps perhaps near the top of you file,
+        That would generally be considered a global variable.
+"""
+balance = 0
+
+def main():
+    print(f"Balance: {balance}")
+    deposite(100)
+    withdraw(50)
+    print(f"Balance: {balance}")
+
+def deposite(n):
+    balance += n
+
+def withdraw(n):
+    balance -= n 
+
+if __name__ == "__main__":
+    main()
+
+    # If we do this we will see a new error called "UnboundLocalError".
+    # The error says "cannot access local variable 'balance' where it is not associated with a value"
+
+    # Which is kinda misleading cause We absolutely assigned balance of value.
+"""
+    What python is actually saying it to us is if we actually want to change the change the value_
+        It might need to be local to the function.
+    
+    If we are trying to change a global variable in a function it clearly does not works.
+        It is okay to read the variable but we can't write to it in the same way.
+
+"""
+
+# The is a keyword in python called global that allows you to tell a function that this is not a variable that is local to you.
+# And we want it to be a global variable that we want the function to edit.
+
+# The try the code again 
+
+
+
+balance = 0
+
+def main():
+    print(f"Balance: {balance}")
+    deposite(100)
+    withdraw(50)
+    print(f"Balance: {balance}")
+
+def deposite(n):
+    global balance
+    balance += n
+
+def withdraw(n):
+    global balance
+    balance -= n 
+
+if __name__ == "__main__":
+    main()
+
+class Account:
+    def __init__(self):
+        self._balance = 0           
+
+    @property                               # We used "@property" because we want to remind ourselves that it is the property of the class.
+    def balance(self):
+        return self._balance
+
+
+# We used the underscore "_" in "_balance" to effectively indicate that it's private.
+        # It's just an indication to ourselves that this is something that we shouldn't touch or other code shouldn't touch, just functions in this class now 
+
+    def deposite(self, n):
+        self._balance += n
+
+    def withdraw(self, n):
+        self._balance -= n 
+
+# We are now going to create an account object by calling the account Constructor which is the name of the class.
+
+def main():
+    account = Account()
+    print(f"Balance: {account.balance}")
+    account.deposite(100)
+    account.withdraw(50)
+    print(f"Balance: {account.balance}")
+
+if __name__ == "__main__":
+    main()
+
+# Let's try something new.
+
+def meow(n):
+    for _ in range(n):
+        print("meow")
+
+number = input("Number: ")
+meow(number)
+
+# What is wrong in this code?
+
+# We can see a new error and it is saying_
+"""
+    Exception has occurred: TypeError
+        'str' object cannot be interpreted as an integer
+"""
+
+# It's saying that the given input is in an string format.
+# How do we usually solve this problem?
+
+# We just turn it into the 'int' while taking the input as usual. But there is a new way to do this.
+
+def meow(n: int):
+    for _ in range(n):
+        print("meow")
+
+number = input("Number: ")
+meow(number)
+
+# Still we can see an error while says the following_
+"""
+    Exception has occurred: TypeError
+        'str' object cannot be interpreted as an integer
+"""
+# But let's try this in "mypy" program.
+"""
+    It is an example of a program that understands type hints and if we run i proactively ourselves_
+        we can fund bugs like this in my code before I or worse a user actually runs and encouters something cryptic
+    Like this TypeError here.
+
+"""
+# To use mypy we are going to go to the terminal window and we are going to type in "mypy meows.py"( The name of the file)
+
+# By this the user can get the exact information about what is wrong with the writter code.
+
+def meow(n: int):
+    for _ in range(n):
+        print("meow")
+
+number: int = input("Number: ")
+meow(number)
+# If we use this then still we'll see the same error.
+
+def meow(n: int):
+    for _ in range(n):
+        print("meow")
+
+number: int = int(input("Number: "))
+meow(number)
+
+# So we can fix the code this way.
+# If we try something like this_
+
+def meow(n: int):
+    for _ in range(n):
+        print("meow")
+
+number: int = int(input("Number: "))
+meows: str = meow(number)
+print(meows)
+
+"""
+    We will see something like this_
+        meow
+        meow
+        meow 
+        None
+"""
+# As it turns out our meow function only has a side effect. It just prints out meow a number of times.
+# It doesn't have any returned value.
+
